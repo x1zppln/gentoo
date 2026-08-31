@@ -1,0 +1,135 @@
+# SYSTEM PACKAGES #
+sys-apps/portage native-extensions ipc # these are needed
+dev-lang/perl -minimal # you can't use perl installation scripts with minimal
+sys-devel/gcc nptl cxx # these are defaults for gcc
+sys-libs/glibc multiarch # this increases performance
+dev-libs/ncurses tinfo # needed to recognize terminal
+net-misc/dhcpcd embedded # for minimal dhcpcd
+app-arch/xz-utils extra-filters	# needed for kernel
+sys-firmware/intel-microcode split-ucode # needed for microcode
+sys-kernel/linux-firmware savedconfig redistributable compress-xz # needed for nvidia-firmware
+sys-kernel/gentoo-sources symlink experimental # needed to optimize for our cpu
+media-video/pipewire pipewire-alsa sound-server # needed for sound to work
+sys-auth/seatd server # for wayland login
+sys-apps/util-linux su pam suid # for root login
+x11-drivers/nvidia-drivers driver modules static-libs # all of them needed
+sys-fs/ntfs3g fuse mount-ntfs # for external hdd
+sys-fs/fuse suid
+net-misc/curl http2 ssl openssl curl_ssl_openssl # for git sync
+dev-vcs/git curl # for git sync
+sys-apps/systemd-utils tmpfiles # dependency
+dev-libs/glib mime # not recommended to disable by package
+dev-lang/python ensurepip ssl sqlite ncurses # needed as dependency
+
+x11-libs/libdrm video_cards_amdgpu
+dev-libs/glib introspection
+app-arch/libarchive zstd
+media-libs/libheif aom
+
+# DEFAULT APPS (these are default apps for Gentoo)#
+app-alternatives/awk mawk
+app-alternatives/bzip2 reference 
+app-alternatives/gzip reference 
+app-alternatives/sh bash 
+app-alternatives/tar gnu 
+app-alternatives/yacc bison 
+app-alternatives/lex flex
+app-alternatives/bc gnu 
+app-alternatives/cpio gnu 
+
+# FONT RENDERING (these are basically needed for all apps) #
+media-libs/freetype adobe-cff cleartype-hinting harfbuzz truetype png
+media-libs/harfbuzz glib icu truetype cairo graphite introspection
+
+# CLANG ENVIRONMENT (needed for compiling firefox or other PGO programs) #
+sys-devel/clang-runtime compiler-rt sanitize
+sys-devel/clang-common default-compiler-rt default-lld
+sys-libs/compiler-rt-sanitizers profile orc
+sys-libs/libunwind static-libs
+
+# WORLD PACKAGES #
+
+# neovim uses luajit by default so we select it#
+app-editors/neovim lua_single_target_luajit
+dev-lua/luv lua_single_target_luajit -lua_single_target_lua5-4
+dev-lua/mpack lua_targets_luajit lua_single_target_luajit
+dev-lua/lpeg lua_targets_luajit lua_single_target_luajit
+dev-lua/lua-cjson internal-fpconv
+
+# packages we install # 
+sys-apps/xdg-desktop-portal screencast
+media-gfx/imv freeimage jpeg png
+media-libs/freeimage webp
+media-sound/mpd ffmpeg
+media-video/ffmpeg dav1d vpx opus encode libass sdl x264 gpl X pulseaudio
+media-libs/libvpx postproc highbitdepth
+media-libs/dav1d 10bit 8bit
+media-video/mpv cli -vulkan egl libplacebo lua nvenc rubberband uchardet iconv lua_single_target_luajit
+media-libs/libplacebo -vulkan opengl # opengl is better with mpv
+net-vpn/openvpn openssl
+net-p2p/qbittorrent qt6 gui
+net-libs/libtorrent-rasterbar dht
+media-gfx/imagemagick corefonts truetype jpeg opencl pango png webp
+www-client/firefox eme-free jumbo-build openh264 dbus
+app-office/libreoffice gtk dbus 
+media-sound/ncmpcpp taglib
+net-vpn/openvpn openssl
+
+# required use flags for our setup #
+# these are added because portage wants them enabled #
+# because we enabled other things above #
+mail-client/neomutt notmuch sasl
+net-mail/isync ssl
+sys-auth/polkit kde daemon # without these you can't build kde apps or breeze
+x11-libs/gtk+ X introspection
+dev-libs/libpcre2 unicode pcre16
+
+app-alternatives/ninja samurai
+
+# all of qt packages are needed for hyprland and xdg-portal #
+dev-qt/qtbase gui egl eglfs libinput udev opengl widgets dbus ssl xml sql sqlite
+dev-qt/qtgui egl eglfs dbus libinput udev png X
+dev-qt/qtnetwork ssl
+dev-qt/qtsql sqlite
+dev-qt/qtwidgets png
+dev-qt/qtdeclarative widgets opengl sql
+dev-qt/qtcore icu
+dev-qt/qttools linguist
+media-libs/libglvnd X
+x11-libs/cairo X glib
+x11-libs/pango X introspection
+app-text/xmlto text
+app-accessibility/at-spi2-core introspection
+media-libs/libepoxy X egl
+x11-libs/gdk-pixbuf introspection
+media-libs/libass fontconfig
+media-libs/libsdl2 sound video opengl gles2 X
+media-libs/mesa gles2 X
+dev-libs/boost zlib nls icu
+media-libs/lsp-plugins lv2
+dev-libs/libxml2 python
+dev-libs/gmime crypt
+media-gfx/qrencode png
+app-arch/libarchive bzip2
+kde-frameworks/kconfig qml dbus
+kde-frameworks/kglobalaccel X
+kde-frameworks/kwindowsystem X
+kde-frameworks/kitemmodels qml
+sys-libs/libblockdev cryptsetup
+x11-libs/libxkbcommon X
+sys-fs/cryptsetup openssl
+media-libs/mlt xml qt5 frei0r sdl ffmpeg
+media-fonts/fontawesome otf
+app-crypt/gpgme cxx
+app-text/libwpd tools
+dev-libs/xmlsec nss
+media-libs/libpng apng
+media-libs/openh264 plugin
+net-libs/nodejs icu ssl
+gui-libs/wlroots tinywl
+dev-lang/ruby ssl
+app-crypt/gcr gtk
+dev-lang/spidermonkey -clang
+net-im/telegram-desktop fonts qt6 jemalloc
+media-libs/libtgvoip alsa
+sys-libs/zlib minizip
