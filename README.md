@@ -69,3 +69,64 @@ permit nopass keepenv :root" > /etc/doas.conf
 emerge app-eselect/eselect-repository dev-vcs/git
 eselect repository enable hyproverlay 
 emaint sync -r hyproverlay
+rc-update add seatd default
+useradd -mG wheel,audio,video,usb,input,portage,pipewire,seat diogo
+mkdir -p /home/diogo/.config/hypr
+curl -L https://raw.githubusercontent.com/hyprwm/Hyprland/3229862dd4cbfa93638a4d16ed86ec2fda5d38a6/example/hyprland.conf -o /home/$username/.config/hypr/hyprland.conf
+echo "exec-once=dbus-launch gentoo-pipewire-launcher & hyprpaper" >> /home/diogo/.config/hypr/hyprland.conf
+echo "exec-once=/home/diogo/.config/hypr/portalstart" >> /home/diogo/.config/hypr/hyprland.conf
+
+echo "misc {
+disable_hyprland_logo=1
+disable_splash_rendering=1
+}
+
+env = QT_SCREEN_SCALE_FACTORS,1;1
+env = WLR_NO_HARDWARE_CURSORS,1
+env = GBM_BACKEND,nvidia-drm
+env = __GLX_VENDOR_LIBRARY_NAME,nvidia
+env = _JAVA_AWT_WM_NONREPARENTING,1
+env = ANV_QUEUE_THREAD_DISABLE,1
+env = QT_QPA_PLATFORM,wayland
+env = CLUTTER_BACKEND,wayland
+env = SDL_VIDEODRIVER,wayland
+env = XDG_SESSION_TYPE,wayland
+env = XDG_CURRENT_DESKTOP,Hyprland
+env = XDG_SESSION_DESKTOP,Hyprland
+env = MOZ_ENABLE_WAYLAND,1
+env = MOZ_DBUS_REMOTE,1" >> /home/diogo/.config/hypr/hyprland.conf
+
+echo "#\!/bin/bash
+sleep 1
+killall xdg-desktop-portal-hyprland
+killall xdg-desktop-portal-wlr
+killall xdg-desktop-portal
+/usr/libexec/xdg-desktop-portal-hyprland &
+sleep 2
+/usr/libexec/xdg-desktop-portal &" > /home/diogo/.config/hypr/portalstart
+
+echo "#\!/bin/sh
+cd ~
+export XDG_RUNTIME_DIR=\"/tmp/hyprland\"
+mkdir -p \$XDG_RUNTIME_DIR
+chmod 0700 \$XDG_RUNTIME_DIR
+exec dbus-launch --exit-with-session Hyprland" >> /home/diogo/.config/hypr/start.sh
+
+chmod +x /home/diogo/.config/hypr/portalstart
+chmod +x /home/diogo/.config/hypr/start.sh
+
+[ "$(tty)" = "/dev/tty1" ] && ! pidof -s Hyprland >/dev/null 2>&1 && exec "/home/diogo/.config/hypr/start.sh"
+
+eselect fontconfig disable 10-hinting-slight.conf
+eselect fontconfig disable 10-no-antialias.conf
+eselect fontconfig disable 10-sub-pixel-none.conf
+eselect fontconfig enable 10-hinting-full.conf
+eselect fontconfig enable 10-sub-pixel-rgb.conf
+eselect fontconfig enable 10-yes-antialias.conf
+eselect fontconfig enable 11-lcdfilter-default.conf
+
+rm -rf /var/tmp/portage/*
+rm -rf /var/cache/distfiles/*
+rm -rf /var/cache/binpkgs/*
+
+efibootmgr -c -d /dev/nvme0n1 -p 1 -L "gentoo" '\EFI\BOOT\BOOTX64.EFI'
