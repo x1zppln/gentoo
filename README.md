@@ -52,7 +52,7 @@ dispatch-conf
 make modules_install
 mkdir -p /boot/EFI/BOOT && cp /usr/src/linux/arch/x86/boot/bzImage /boot/EFI/BOOT/BOOTX64.EFI
 sed -i "s/hostname=.*/hostname=\"alqola\"/g" /etc/conf.d/hostname
-rc-update add dhcpcd
+
 passwd
 
 vim /etc/fstab
@@ -67,6 +67,7 @@ echo "permit :wheel
 permit nopass keepenv :diogo
 permit nopass keepenv :root" > /etc/doas.conf
 emerge app-eselect/eselect-repository dev-vcs/git
+emerge gui-wm/hyprland foot wofi dunst imv doas gnome-base/gsettings-desktop-schemas wl-clipboard xdg-desktop-portal-hyprland dhcpcd efibootmgr
 eselect repository enable hyproverlay 
 emaint sync -r hyproverlay
 rc-update add seatd default
