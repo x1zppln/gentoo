@@ -18,6 +18,8 @@ mount --make-rslave /mnt/gentoo/dev
 mount --bind /run /mnt/gentoo/run
 mount --make-slave /mnt/gentoo/run
 chroot /mnt/gentoo/ /bin/bash
+
+
 mount /dev/nvme0n1p1 /boot/
 emerge-webrsync
 echo "Brazil/East" > /etc/timezone
@@ -33,15 +35,21 @@ rm -rf /etc/portage/package.accept_keywords
 curl -L https://raw.githubusercontent.com/x1zppln/gentoo/refs/heads/main/package.use -o /etc/portage/package.use
 curl -L https://raw.githubusercontent.com/x1zppln/gentoo/refs/heads/main/package.accept_keywords -o /etc/portage/package.accept_keywords
 curl -L https://raw.githubusercontent.com/x1zppln/gentoo/refs/heads/main/make.conf -o /etc/portage/make.conf
+emerge --update --newuse @world
+emerge @preserved-rebuild
+emerge --depclean
+sed -i "s/hostname=.*/hostname=\"alqola\"/g" /etc/conf.d/hostname
+
+
 mkdir -p /etc/portage/env
  curl -L https://gist.githubusercontent.com/emrakyz/23bf6fe9c30aa0b1eb88021889750ace/raw/832a0160ac0d0383c4f600da5cf8af4290019ff6/compiler-firefox -o /etc/portage/env/compiler-firefox 
 echo "www-client/firefox compiler-firefox" > /etc/portage/package.env
-merge --update --newuse @world
-emerge @preserved-rebuild
-emerge --depclean
+
 USE="-compress-xz" emerge linux-firmware
 USE="-harfbuzz" emerge --oneshot freetype
 emerge --oneshot freetype
+
+
 emerge gentoo-sources
 cd /usr/src/linux
 curl -L https://raw.githubusercontent.com/x1zppln/gentoo/refs/heads/main/.config -o .config
@@ -51,16 +59,14 @@ emerge linux-firmware
 dispatch-conf
 make modules_install
 mkdir -p /boot/EFI/BOOT && cp /usr/src/linux/arch/x86/boot/bzImage /boot/EFI/BOOT/BOOTX64.EFI
-sed -i "s/hostname=.*/hostname=\"alqola\"/g" /etc/conf.d/hostname
+
 
 passwd
-
-vim /etc/fstab
 rc-update add dhcpcd
 
-cd /etc/init.d/rc-upda
-ln -s net.lo net.X
-rc-update add net.X
+cd /etc/init.d/
+ln -s net.lo net.enp4s0
+rc-update add net.enp4s0
 emerge doas
 
 echo "permit :wheel
