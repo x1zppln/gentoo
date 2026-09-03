@@ -36,13 +36,21 @@ UUID=$UUID_ROOT / ext4 defaults,noatime 0 1
 echo "Brazil/East" > /etc/timezone
 emerge --config timezone-data
 
+emerge app-eselect/eselect-repository dev-vcs/git
+eselect repository enable hyproverlay 
+emaint sync -r hyproverlay
+mkdir -p /home/diogo/.config/hypr
+curl -L https://raw.githubusercontent.com/hyprwm/Hyprland/3229862dd4cbfa93638a4d16ed86ec2fda5d38a6/example/hyprland.conf -o /home/diogo/.config/hypr/hyprland.conf
+echo "exec-once=dbus-launch gentoo-pipewire-launcher & hyprpaper" >> /home/diogo/.config/hypr/hyprland.conf
+echo "exec-once=/home/diogo/.config/hypr/portalstart" >> /home/diogo/.config/hypr/hyprland.conf
+
 
 rm -rf /etc/portage/package.use
 rm -rf /etc/portage/package.accept_keywords
 curl -L https://raw.githubusercontent.com/x1zppln/gentoo/refs/heads/main/package.use -o /etc/portage/package.use
 curl -L https://raw.githubusercontent.com/x1zppln/gentoo/refs/heads/main/package.accept_keywords -o /etc/portage/package.accept_keywords
 curl -L https://raw.githubusercontent.com/x1zppln/gentoo/refs/heads/main/make.conf -o /etc/portage/make.conf
-emerge --update --newuse @world gui-wm/hyprland foot wofi dunst imv doas gnome-base/gsettings-desktop-schemas wl-clipboard xdg-desktop-portal-hyprland dhcpcd efibootmgr doas app-eselect/eselect-repository dev-vcs/git
+emerge --update --newuse @world gui-wm/hyprland foot wofi dunst imv doas gnome-base/gsettings-desktop-schemas wl-clipboard xdg-desktop-portal-hyprland dhcpcd efibootmgr doas
 emerge @preserved-rebuild
 emerge --depclean
 
@@ -58,11 +66,6 @@ permit nopass keepenv :root" > /etc/doas.conf
 mkdir -p /etc/portage/env
 curl -L https://gist.githubusercontent.com/emrakyz/23bf6fe9c30aa0b1eb88021889750ace/raw/832a0160ac0d0383c4f600da5cf8af4290019ff6/compiler-firefox -o /etc/portage/env/compiler-firefox 
 echo "www-client/firefox compiler-firefox" > /etc/portage/package.env
-
-
-USE="-compress-xz" emerge linux-firmware
-USE="-harfbuzz" emerge --oneshot freetype
-emerge --oneshot freetype
 
 
 emerge gentoo-sources
@@ -84,12 +87,6 @@ rc-update add seatd default
 useradd -mG wheel,audio,video,usb,input,portage,pipewire,seat diogo
 
 
-eselect repository enable hyproverlay 
-emaint sync -r hyproverlay
-mkdir -p /home/diogo/.config/hypr
-curl -L https://raw.githubusercontent.com/hyprwm/Hyprland/3229862dd4cbfa93638a4d16ed86ec2fda5d38a6/example/hyprland.conf -o /home/diogo/.config/hypr/hyprland.conf
-echo "exec-once=dbus-launch gentoo-pipewire-launcher & hyprpaper" >> /home/diogo/.config/hypr/hyprland.conf
-echo "exec-once=/home/diogo/.config/hypr/portalstart" >> /home/diogo/.config/hypr/hyprland.conf
 
 
 echo "misc {
