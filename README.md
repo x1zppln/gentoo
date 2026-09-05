@@ -36,6 +36,14 @@ UUID=$UUID_ROOT / ext4 defaults,noatime 0 1
 echo "Brazil/East" > /etc/timezone
 emerge --config timezone-data
 
+
+rm -rf /etc/portage/package.use
+rm -rf /etc/portage/package.accept_keywords
+curl -L https://raw.githubusercontent.com/x1zppln/gentoo/refs/heads/main/package.use -o /etc/portage/package.use
+curl -L https://raw.githubusercontent.com/x1zppln/gentoo/refs/heads/main/package.accept_keywords -o /etc/portage/package.accept_keywords
+curl -L https://raw.githubusercontent.com/x1zppln/gentoo/refs/heads/main/make.conf -o /etc/portage/make.conf
+
+
 emerge app-eselect/eselect-repository dev-vcs/git
 eselect repository enable hyproverlay 
 emaint sync -r hyproverlay
@@ -45,11 +53,6 @@ echo "exec-once=dbus-launch gentoo-pipewire-launcher & hyprpaper" >> /home/diogo
 echo "exec-once=/home/diogo/.config/hypr/portalstart" >> /home/diogo/.config/hypr/hyprland.conf
 
 
-rm -rf /etc/portage/package.use
-rm -rf /etc/portage/package.accept_keywords
-curl -L https://raw.githubusercontent.com/x1zppln/gentoo/refs/heads/main/package.use -o /etc/portage/package.use
-curl -L https://raw.githubusercontent.com/x1zppln/gentoo/refs/heads/main/package.accept_keywords -o /etc/portage/package.accept_keywords
-curl -L https://raw.githubusercontent.com/x1zppln/gentoo/refs/heads/main/make.conf -o /etc/portage/make.conf
 emerge --update --newuse @world gui-wm/hyprland foot wofi dunst imv doas gnome-base/gsettings-desktop-schemas wl-clipboard xdg-desktop-portal-hyprland dhcpcd efibootmgr doas
 emerge @preserved-rebuild
 emerge --depclean
