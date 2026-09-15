@@ -141,11 +141,11 @@ chmod +x /home/diogo/.config/hypr/start.sh
 
 
 eselect fontconfig disable 10-hinting-slight.conf
-eselect fontconfig disable 10-no-antialias.conf
-eselect fontconfig disable 10-sub-pixel-none.conf
-eselect fontconfig enable 10-hinting-full.conf
-eselect fontconfig enable 10-sub-pixel-rgb.conf
-eselect fontconfig enable 10-yes-antialias.conf
+eselect fontconfig disable 10-no-antialias.conf 
+eselect fontconfig disable 10-sub-pixel-none.conf 
+eselect fontconfig enable 10-hinting-full.conf 
+eselect fontconfig enable 10-sub-pixel-rgb.conf 
+eselect fontconfig enable 10-yes-antialias.conf 
 eselect fontconfig enable 11-lcdfilter-default.conf
 
 
