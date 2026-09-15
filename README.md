@@ -94,10 +94,6 @@ make modules_install
 mkdir -p /boot/EFI/BOOT && cp /usr/src/linux/arch/x86/boot/bzImage /boot/EFI/BOOT/BOOTX64.EFI
 
 
-
-
-
-
 echo "misc {
 disable_hyprland_logo=1
 disable_splash_rendering=1
