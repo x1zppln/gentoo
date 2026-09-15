@@ -44,13 +44,9 @@ curl -L https://raw.githubusercontent.com/x1zppln/gentoo/refs/heads/main/package
 curl -L https://raw.githubusercontent.com/x1zppln/gentoo/refs/heads/main/make.conf -o /etc/portage/make.conf
 
 
-emerge app-eselect/eselect-repository dev-vcs/git
-eselect repository enable hyproverlay 
+emerge dev-vcs/git eselect-repository
+eselect repository enable hyproverlay
 emaint sync -r hyproverlay
-mkdir -p /home/diogo/.config/hypr
-curl -L https://raw.githubusercontent.com/hyprwm/Hyprland/3229862dd4cbfa93638a4d16ed86ec2fda5d38a6/example/hyprland.conf -o /home/diogo/.config/hypr/hyprland.conf
-echo "exec-once=dbus-launch gentoo-pipewire-launcher & hyprpaper" >> /home/diogo/.config/hypr/hyprland.conf
-echo "exec-once=/home/diogo/.config/hypr/portalstart" >> /home/diogo/.config/hypr/hyprland.conf
 
 
 emerge --update --newuse @world gui-wm/hyprland foot wofi dunst imv doas gnome-base/gsettings-desktop-schemas wl-clipboard xdg-desktop-portal-hyprland dhcpcd efibootmgr doas
@@ -58,7 +54,23 @@ emerge @preserved-rebuild
 emerge --depclean
 
 
+useradd -mG wheel,audio,video,usb,input,portage,pipewire,seat diogo
+
+
+cd /etc/init.d/
+ln -s net.lo net.enp4s0
+rc-update add dhcpcd
+rc-update add net.enp4s0
+rc-update add seatd default
+
+
 sed -i "s/hostname=.*/hostname=\"alqola\"/g" /etc/conf.d/hostname
+
+
+mkdir -p /home/diogo/.config/hypr
+curl -L https://raw.githubusercontent.com/hyprwm/Hyprland/3229862dd4cbfa93638a4d16ed86ec2fda5d38a6/example/hyprland.conf -o /home/diogo/.config/hypr/hyprland.conf
+echo "exec-once=dbus-launch gentoo-pipewire-launcher & hyprpaper" >> /home/diogo/.config/hypr/hyprland.conf
+echo "exec-once=/home/diogo/.config/hypr/portalstart" >> /home/diogo/.config/hypr/hyprland.conf
 
 
 echo "permit :wheel
@@ -82,12 +94,6 @@ make modules_install
 mkdir -p /boot/EFI/BOOT && cp /usr/src/linux/arch/x86/boot/bzImage /boot/EFI/BOOT/BOOTX64.EFI
 
 
-cd /etc/init.d/
-ln -s net.lo net.enp4s0
-rc-update add dhcpcd
-rc-update add net.enp4s0
-rc-update add seatd default
-useradd -mG wheel,audio,video,usb,input,portage,pipewire,seat diogo
 
 
 
