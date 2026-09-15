@@ -133,19 +133,19 @@ chmod 0700 \$XDG_RUNTIME_DIR
 exec dbus-launch --exit-with-session Hyprland" >> /home/diogo/.config/hypr/start.sh
 
 
-chmod +x /home/diogo/.config/hypr/portalstart
+chmod +x /home/diogo/.config/hypr/portalstart  
 chmod +x /home/diogo/.config/hypr/start.sh
 
 
 [ "$(tty)" = "/dev/tty1" ] && ! pidof -s Hyprland >/dev/null 2>&1 && exec "/home/diogo/.config/hypr/start.sh"
 
 
-eselect fontconfig disable 10-hinting-slight.conf
-eselect fontconfig disable 10-no-antialias.conf 
-eselect fontconfig disable 10-sub-pixel-none.conf 
-eselect fontconfig enable 10-hinting-full.conf 
-eselect fontconfig enable 10-sub-pixel-rgb.conf 
-eselect fontconfig enable 10-yes-antialias.conf 
+eselect fontconfig disable 10-hinting-slight.conf  
+eselect fontconfig disable 10-no-antialias.conf  
+eselect fontconfig disable 10-sub-pixel-none.conf  
+eselect fontconfig enable 10-hinting-full.conf  
+eselect fontconfig enable 10-sub-pixel-rgb.conf  
+eselect fontconfig enable 10-yes-antialias.conf  
 eselect fontconfig enable 11-lcdfilter-default.conf
 
 
