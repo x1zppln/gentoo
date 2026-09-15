@@ -1,4 +1,4 @@
-fdisk /dev/nvme0n1p3
+fdisk /dev/nvme0n1p3  
 mkfs.ext4 /dev/nvme0n1p3
 mkfs.vfat -F 32 /dev/nvme0n1p1
 mkswap /dev/nvme0n1p2
